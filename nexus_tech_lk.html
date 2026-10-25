@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus Tech.lk - Build the machine you were promised</title>
+    
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dark: '#05070d',
+                        darker: '#030408',
+                        card: 'rgba(255, 255, 255, 0.03)',
+                        cyan: {
+                            400: '#22d3ee',
+                            500: '#06b6d4',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #05070d;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        /* Infinite Scrolling Marquee */
+        .marquee-container {
+            overflow: hidden; white-space: nowrap; width: 100%;
+            background: rgba(255,255,255,0.02);
+            border-top: 1px solid rgba(255,255,255,0.05);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding: 12px 0;
+            position: relative;
+        }
+        /* Fade edges */
+        .marquee-container::before, .marquee-container::after {
+            content: ''; position: absolute; top: 0; width: 150px; height: 100%; z-index: 2;
+        }
+        .marquee-container::before { left: 0; background: linear-gradient(to right, #05070d, transparent); }
+        .marquee-container::after { right: 0; background: linear-gradient(to left, #05070d, transparent); }
+        
+        .marquee-content {
+            display: inline-block;
+            animation: marqueeScroll 25s linear infinite;
+        }
+        @keyframes marqueeScroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* Add to Cart Flying Animation Image */
+        .flying-img {
+            position: fixed; z-index: 99998;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: none;
+        }
+
+        /* Styling details */
+        .neon-text { text-shadow: 0 0 10px rgba(34, 211, 238, 0.5), 0 0 20px rgba(34, 211, 238, 0.3); }
+        .neon-border { box-shadow: 0 0 15px rgba(34, 211, 238, 0.2); border: 1px solid rgba(34, 211, 238, 0.5); }
+        .neon-border:hover { box-shadow: 0 0 25px rgba(34, 211, 238, 0.4); }
+        
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .glow-bg {
+            position: absolute; width: 300px; height: 300px;
+            background: radial-gradient(circle, rgba(34,211,238,0.15) 0%, rgba(5,7,13,0) 70%);
+            border-radius: 50%; z-index: -1; pointer-events: none;
+        }
+
+        /* Animated Waves & Particles Background */
+        .wave-container { position: fixed; inset: 0; z-index: -4; pointer-events: none; overflow: hidden; background: #05070d; }
+        .wave {
+            position: absolute; width: 150vw; height: 150vh;
+            background: radial-gradient(ellipse at center, var(--wave-color) 0%, transparent 60%);
+            opacity: 0.15; animation: waveMove 15s infinite ease-in-out alternate; filter: blur(60px);
+        }
+        .wave-1 { top: -25%; left: -25%; --wave-color: #22d3ee; animation-delay: 0s; }
+        .wave-2 { bottom: -25%; right: -25%; --wave-color: #3b82f6; animation-delay: -7s; }
+        .wave-3 { top: 40%; left: 20%; width: 100vw; height: 100vh; --wave-color: #06b6d4; animation-duration: 25s; opacity: 0.1; }
+
+        @keyframes waveMove {
+            0% { transform: scale(1) translate(0, 0) rotate(0deg); }
+            50% { transform: scale(1.1) translate(5%, 5%) rotate(5deg); }
+            100% { transform: scale(0.95) translate(-5%, -5%) rotate(-5deg); }
+        }
+
+        .bg-particle {
+            position: absolute; background: white; border-radius: 50%;
+            pointer-events: none; z-index: -3; animation: drift linear infinite;
+        }
+        body.theme-default .bg-particle { background: #22d3ee; box-shadow: 0 0 8px #22d3ee; }
+        
+        @keyframes drift {
+            0% { transform: translateY(10vh) translateX(0); opacity: 0; }
+            20% { opacity: var(--max-opacity, 0.5); }
+            80% { opacity: var(--max-opacity, 0.5); }
+            100% { transform: translateY(-110vh) translateX(var(--drift-x, 20px)); opacity: 0; }
+        }
+
+        /* Festive Overrides for Background */
+        body.theme-halloween .wave-1 { --wave-color: #f97316; }
+        body.theme-halloween .wave-2 { --wave-color: #a855f7; }
+        body.theme-halloween .wave-3 { --wave-color: #ea580c; }
+        body.theme-halloween .bg-particle { background: #f97316; box-shadow: 0 0 8px #f97316; }
+        
+        body.theme-christmas .wave-1 { --wave-color: #ef4444; }
+        body.theme-christmas .wave-2 { --wave-color: #22c55e; }
+        body.theme-christmas .wave-3 { --wave-color: #ffffff; }
+        body.theme-christmas .bg-particle { background: #ffffff; box-shadow: 0 0 8px #ffffff; }
+
+        /* Scroll Reveal Animations */
+        .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.5, 0, 0, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* 3D Hover Base transition */
+        .hover-3d {
+            transition: transform 0.1s ease-out, box-shadow 0.3s ease;
+            transform-style: preserve-3d;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #030408; }
+        ::-webkit-scrollbar-thumb { background: rgba(34, 211, 238, 0.3); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(34, 211, 238, 0.6); }
+
+        /* Festive Particles */
+        .particle {
+            position: absolute; pointer-events: none; z-index: 35;
+            animation: fall linear forwards; filter: drop-shadow(0 0 5px rgba(255,255,255,0.3));
+        }
+        @keyframes fall {
+            0% { transform: translateY(-50px) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+        .flutter { animation: fall linear forwards, flutterMove 3s ease-in-out infinite alternate; }
+        @keyframes flutterMove { 0% { margin-left: -30px; } 100% { margin-left: 30px; } }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Animated Background Elements -->
+    <div id="festive-container" class="fixed inset-0 pointer-events-none z-30 overflow-hidden"></div>
+    <div class="wave-container">
+        <div class="wave wave-1"></div>
+        <div class="wave wave-2"></div>
+        <div class="wave wave-3"></div>
+    </div>
+    <div id="bg-particles" class="fixed inset-0 pointer-events-none z-[-3] overflow-hidden"></div>
+
+    <!-- Navbar -->
+    <nav class="fixed w-full z-40 glass-panel border-b border-white/10 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div onclick="window.scrollTo(0,0)" class="flex items-center gap-2 cursor-pointer">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center shadow-[0_0_15px_rgba(34,211,238,0.5)]">
+                        <i class="fa-solid fa-bolt text-darker text-xl"></i>
+                    </div>
+                    <span class="font-display font-bold text-2xl tracking-tight">Nexus<span class="text-cyan-400">Tech</span><span class="text-xs text-gray-400 align-top">.lk</span></span>
+                </div>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-8">
+                    <a href="#home" class="text-gray-300 hover:text-cyan-400 transition-colors text-sm font-medium">Home</a>
+                    <a href="#shop" class="text-gray-300 hover:text-cyan-400 transition-colors text-sm font-medium">Shop</a>
+                    <a href="#builds" class="text-gray-300 hover:text-cyan-400 transition-colors text-sm font-medium">Custom Builds</a>
+                    <a href="#reviews" class="text-gray-300 hover:text-cyan-400 transition-colors text-sm font-medium">Reviews</a>
+                    <a href="#contact" class="text-gray-300 hover:text-cyan-400 transition-colors text-sm font-medium">Contact</a>
+                </div>
+
+                <!-- Theme & Cart Icons -->
+                <div class="flex items-center gap-2 sm:gap-4">
+                    <!-- Theme Toggle -->
+                    <div class="relative group">
+                        <button class="relative p-2 rounded-full hover:bg-white/5 transition border border-transparent hover:border-cyan-400/30 text-gray-300 hover:text-cyan-400" aria-label="Themes">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        </button>
+                        <div class="absolute right-0 mt-2 w-36 glass-panel rounded-xl flex flex-col overflow-hidden opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-right scale-95 group-hover:scale-100 z-50">
+                            <button onclick="setTheme('default')" class="px-4 py-2.5 text-sm text-left hover:bg-white/10 text-cyan-400 font-semibold border-b border-white/5 flex items-center gap-2">⚡ Default</button>
+                            <button onclick="setTheme('halloween')" class="px-4 py-2.5 text-sm text-left hover:bg-white/10 text-orange-400 font-semibold border-b border-white/5 flex items-center gap-2">🎃 Halloween</button>
+                            <button onclick="setTheme('christmas')" class="px-4 py-2.5 text-sm text-left hover:bg-white/10 text-red-400 font-semibold flex items-center gap-2">🎄 Christmas</button>
+                        </div>
+                    </div>
+
+                    <button id="nav-cart-btn" onclick="toggleCart(true)" class="relative p-2 rounded-full hover:bg-white/5 transition border border-transparent hover:border-cyan-400/30 group">
+                        <i class="fa-solid fa-cart-shopping text-gray-300 group-hover:text-cyan-400 transition text-lg"></i>
+                        <span id="cart-count" class="absolute top-0 right-0 -mt-1 -mr-1 bg-cyan-400 text-darker text-[10px] font-bold px-1.5 py-0.5 rounded-full shadow-[0_0_10px_rgba(34,211,238,0.8)] transition-all">0</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative pt-32 pb-16 lg:pt-48 lg:pb-24 overflow-hidden">
+        <div class="glow-bg top-20 left-10"></div>
+        <div class="glow-bg bottom-0 right-10 w-[500px] h-[500px]"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <!-- Hero Text -->
+                <div>
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-cyan-400/30 bg-cyan-400/10 mb-6 reveal">
+                        <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+                        <span class="text-xs font-semibold text-cyan-400 tracking-widest uppercase">Thalahena, Malabe</span>
+                    </div>
+                    
+                    <!-- Static Fade-in Headline (Replaced Typewriter) -->
+                    <h1 class="text-5xl lg:text-7xl font-display font-bold leading-tight mb-6 reveal" style="transition-delay: 0.2s;">
+                        <span class="text-white">Build the machine you were</span><br>
+                        <span class="text-cyan-400 neon-text">promised.</span>
+                    </h1>
+                    
+                    <p class="text-gray-400 text-lg mb-8 max-w-lg reveal" style="transition-delay: 0.4s;">
+                        Laptops, hand-tuned PC builds and pro-grade accessories — spec'd with you, assembled in our lab and stress-tested before it leaves the bench.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 reveal" style="transition-delay: 0.6s;">
+                        <a href="#shop" class="bg-cyan-400 hover:bg-cyan-300 text-darker font-bold py-4 px-8 rounded-full text-center transition-all shadow-[0_0_20px_rgba(34,211,238,0.4)] hover:shadow-[0_0_30px_rgba(34,211,238,0.6)]">
+                            Shop Now <i class="fa-solid fa-arrow-right ml-2"></i>
+                        </a>
+                        <a href="#contact" class="glass-panel hover:bg-white/10 text-white font-medium py-4 px-8 rounded-full text-center transition-all flex items-center justify-center gap-2">
+                            <i class="fa-brands fa-whatsapp text-cyan-400"></i> Talk to a builder
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Hero Image (3D Tilt enabled) -->
+                <div class="relative hover-3d reveal" style="transition-delay: 0.4s;">
+                    <div class="absolute inset-0 bg-gradient-to-tr from-cyan-400/20 to-purple-500/20 rounded-2xl blur-3xl transform -translate-z-10"></div>
+                    <img src="https://images.unsplash.com/photo-1587202372634-32705e3bf49c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Custom Gaming PC" class="relative rounded-2xl border border-white/10 shadow-2xl object-cover h-[400px] lg:h-[500px] w-full transform translate-z-10">
+                    
+                    <!-- Floating Badge -->
+                    <div class="absolute -bottom-6 -left-6 glass-panel p-4 rounded-xl flex items-center gap-4 animate-bounce transform translate-z-20" style="animation-duration: 3s;">
+                        <div class="bg-cyan-400/20 p-3 rounded-lg text-cyan-400">
+                            <i class="fa-solid fa-temperature-arrow-down text-xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-400 uppercase tracking-wider">Thermal</p>
+                            <p class="font-bold text-white">38°C Idle</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Infinite Scrolling Marquee -->
+    <div class="marquee-container reveal">
+        <div class="marquee-content flex gap-16 items-center text-gray-400 font-display font-bold uppercase tracking-widest text-sm">
+            <span><i class="fa-solid fa-microchip mr-2 text-cyan-400/50"></i> ASUS ROG</span>
+            <span><i class="fa-solid fa-memory mr-2 text-cyan-400/50"></i> Corsair</span>
+            <span><i class="fa-solid fa-laptop mr-2 text-cyan-400/50"></i> MSI</span>
+            <span><i class="fa-solid fa-headset mr-2 text-cyan-400/50"></i> Razer</span>
+            <span><i class="fa-brands fa-nvidia mr-2 text-green-500/60"></i> NVIDIA RTX</span>
+            <span><i class="fa-solid fa-truck-fast mr-2 text-cyan-400/50"></i> Island-wide Delivery</span>
+            <span><i class="fa-solid fa-shield-check mr-2 text-cyan-400/50"></i> Genuine Warranty</span>
+            <!-- Duplicated for seamless loop -->
+            <span><i class="fa-solid fa-microchip mr-2 text-cyan-400/50"></i> ASUS ROG</span>
+            <span><i class="fa-solid fa-memory mr-2 text-cyan-400/50"></i> Corsair</span>
+            <span><i class="fa-solid fa-laptop mr-2 text-cyan-400/50"></i> MSI</span>
+            <span><i class="fa-solid fa-headset mr-2 text-cyan-400/50"></i> Razer</span>
+            <span><i class="fa-brands fa-nvidia mr-2 text-green-500/60"></i> NVIDIA RTX</span>
+            <span><i class="fa-solid fa-truck-fast mr-2 text-cyan-400/50"></i> Island-wide Delivery</span>
+            <span><i class="fa-solid fa-shield-check mr-2 text-cyan-400/50"></i> Genuine Warranty</span>
+        </div>
+    </div>
+
+    <!-- Shop Section -->
+    <section id="shop" class="py-20 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col lg:flex-row justify-between items-end mb-10 gap-6">
+                <div class="reveal">
+                    <span class="text-cyan-400 text-xs font-bold tracking-widest uppercase mb-2 block">The Catalogue</span>
+                    <h2 class="text-4xl font-display font-bold">Shop the lab</h2>
+                </div>
+                
+                <div class="w-full lg:w-auto flex flex-col sm:flex-row gap-3 reveal" style="transition-delay: 0.1s;">
+                    <div class="relative w-full sm:w-64">
+                        <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-500"></i>
+                        <input type="text" id="searchInput" oninput="filterProducts()" placeholder="Search products..." class="w-full bg-dark border border-white/10 rounded-full py-2.5 pl-10 pr-4 text-sm text-white focus:outline-none focus:border-cyan-400 transition-colors">
+                    </div>
+                    <div class="flex gap-2 overflow-x-auto pb-2 sm:pb-0 hide-scrollbar">
+                        <button onclick="setCategory('all')" id="btn-cat-all" class="cat-btn px-5 py-2.5 rounded-full bg-cyan-400 text-darker text-sm font-semibold whitespace-nowrap transition">All</button>
+                        <button onclick="setCategory('laptops')" id="btn-cat-laptops" class="cat-btn px-5 py-2.5 rounded-full glass-panel hover:bg-white/10 text-sm font-medium whitespace-nowrap transition">Laptops</button>
+                        <button onclick="setCategory('pcs')" id="btn-cat-pcs" class="cat-btn px-5 py-2.5 rounded-full glass-panel hover:bg-white/10 text-sm font-medium whitespace-nowrap transition">PCs</button>
+                        <button onclick="setCategory('accessories')" id="btn-cat-accessories" class="cat-btn px-5 py-2.5 rounded-full glass-panel hover:bg-white/10 text-sm font-medium whitespace-nowrap transition">Accessories</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Products injected via JS -->
+            </div>
+            
+            <div id="no-products-msg" class="hidden text-center py-10">
+                <i class="fa-solid fa-box-open text-4xl text-gray-600 mb-4 block"></i>
+                <p class="text-gray-400 text-lg">No products found matching your search.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Custom Builds Section -->
+    <section id="builds" class="py-20 bg-darker border-y border-white/10 relative overflow-hidden">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-cyan-400/10 blur-[120px] rounded-full pointer-events-none"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center max-w-2xl mx-auto mb-16 reveal">
+                <span class="text-cyan-400 text-xs font-bold tracking-widest uppercase mb-2 block">Commissioned Builds</span>
+                <h2 class="text-4xl font-display font-bold mb-4">Custom builds, zero guesswork</h2>
+                <p class="text-gray-400">Pick a tier as your starting point — then we tune every part around the games, software and budget you actually have.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                <div class="glass-panel hover-3d cursor-pointer p-8 rounded-3xl flex flex-col reveal">
+                    <h3 class="text-2xl font-display font-bold mb-1 transform translate-z-20">Starter</h3>
+                    <p class="text-cyan-400 text-xs font-bold uppercase tracking-wider mb-6">1080p Esports</p>
+                    <div class="mb-6 transform translate-z-10">
+                        <span class="text-sm text-gray-400">From</span>
+                        <div class="text-3xl font-display font-bold">Rs 189,000</div>
+                    </div>
+                    <ul class="space-y-3 mb-8 flex-grow">
+                        <li class="flex items-center gap-3 text-gray-300 text-sm"><i class="fa-solid fa-microchip text-cyan-400/70 w-4"></i> Core i5 / Ryzen 5</li>
+                        <li class="flex items-center gap-3 text-gray-300 text-sm"><i class="fa-solid fa-memory text-cyan-400/70 w-4"></i> 16GB DDR4</li>
+                        <li class="flex items-center gap-3 text-gray-300 text-sm"><i class="fa-solid fa-vr-cardboard text-cyan-400/70 w-4"></i> GTX 1650 class GPU</li>
+                        <li class="flex items-center gap-3 text-gray-300 text-sm"><i class="fa-solid fa-hard-drive text-cyan-400/70 w-4"></i> 512GB NVMe</li>
+                    </ul>
+                    <!-- Hidden Img for Cart Animation -->
+                    <img src="https://images.unsplash.com/photo-1587202372634-32705e3bf49c?auto=format&fit=crop&w=600&q=80" class="hidden" alt="Build">
+                    <button onclick="addToCart('b1', event, 'Starter PC Build', 189000, 'https://images.unsplash.com/photo-1587202372634-32705e3bf49c?auto=format&fit=crop&w=600&q=80')" class="w-full py-3 rounded-full border border-white/20 hover:bg-white/10 transition font-semibold text-sm transform translate-z-20">Request this build</button>
+                </div>
+
+                <div class="bg-gradient-to-b from-cyan-900/40 to-dark p-8 hover-3d cursor-pointer rounded-3xl flex flex-col neon-border relative transform md:-translate-y-4 reveal" style="transition-delay: 100ms;">
+                    <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-cyan-400 text-darker px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider translate-z-30">Most Picked</div>
+                    <h3 class="text-2xl font-display font-bold mb-1 transform translate-z-20">Creator</h3>
+                    <p class="text-cyan-400 text-xs font-bold uppercase tracking-wider mb-6">1440p + Editing</p>
+                    <div class="mb-6 transform translate-z-10">
+                        <span class="text-sm text-gray-400">From</span>
+                        <div class="text-3xl font-display font-bold text-white">Rs 438,000</div>
+                    </div>
+                    <ul class="space-y-3 mb-8 flex-grow">
+                        <li class="flex items-center gap-3 text-gray-200 text-sm"><i class="fa-solid fa-microchip text-cyan-400 w-4"></i> Core i7 / Ryzen 7</li>
+                        <li class="flex items-center gap-3 text-gray-200 text-sm"><i class="fa-solid fa-memory text-cyan-400 w-4"></i> 32GB DDR5</li>
+                        <li class="flex items-center gap-3 text-gray-200 text-sm"><i class="fa-solid fa-vr-cardboard text-cyan-400 w-4"></i> RTX 4060 Ti class</li>
+                        <li class="flex items-center gap-3 text-gray-200 text-sm"><i class="fa-solid fa-hard-drive text-cyan-400 w-4"></i> 1TB NVMe Gen4</li>
+                    </ul>
+                    <img src="https://images.unsplash.com/photo-1587202372775-e229f172b9d7?auto=format&fit=crop&w=600&q=80" class="hidden" alt="Build">
+                    <button onclick="addToCart('b2', event, 'Creator PC Build', 438000, 'https://images.unsplash.com/photo-1587202372775-e229f172b9d7?auto=format&fit=crop&w=600&q=80')" class="w-full py-3 rounded-full bg-cyan-400 hover:bg-cyan-300 text-darker transition font-bold text-sm transform translate-z-20 shadow-[0_0_15px_rgba(34,211,238,0.4)]">Request this build</button>
+                </div>
+
+                <div class="glass-panel p-8 hover-3d cursor-pointer rounded-3xl flex flex-col reveal" style="transition-delay: 200ms;">
+                    <h3 class="text-2xl font-display font-bold mb-1 transform translate-z-20">Flagship</h3>
+                    <p class="text-cyan-400 text-xs font-bold uppercase tracking-wider mb-6">4K, No Compromise</p>
+                    <div class="mb-6 transform translate-z-10">
+                        <span class="text-sm text-gray-400">From</span>
+                        <div class="text-3xl font-display font-bold">Rs 645,000</div>
+                    </div>
+                    <ul class="space-y-3 mb-8 flex-grow">
+                        <li class="flex items-center gap-3 text-gray-300 text-sm"><i class="fa-solid fa-microchip text-cyan-400/70 w-4"></i> Core i9 / Ryzen 9</li>
+                        <li class="flex items-center gap-3 text-gray-300 text-sm"><i class="fa-solid fa-memory text-cyan-400/70 w-4"></i> 64GB DDR5</li>
+                        <li class="flex items-center gap-3 text-gray-300 text-sm"><i class="fa-solid fa-vr-cardboard text-cyan-400/70 w-4"></i> RTX 4070 Super+</li>
+                        <li class="flex items-center gap-3 text-gray-300 text-sm"><i class="fa-solid fa-hard-drive text-cyan-400/70 w-4"></i> 2TB NVMe Gen4</li>
+                    </ul>
+                    <img src="https://images.unsplash.com/photo-1587202372634-32705e3bf49c?auto=format&fit=crop&w=600&q=80" class="hidden" alt="Build">
+                    <button onclick="addToCart('b3', event, 'Flagship PC Build', 645000, 'https://images.unsplash.com/photo-1587202372634-32705e3bf49c?auto=format&fit=crop&w=600&q=80')" class="w-full py-3 rounded-full border border-white/20 hover:bg-white/10 transition font-semibold text-sm transform translate-z-20">Request this build</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="reviews" class="py-20 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mb-12 reveal">
+                <span class="text-cyan-400 text-xs font-bold tracking-widest uppercase mb-2 block">Testimonials</span>
+                <h2 class="text-3xl font-display font-bold">What our gamers say</h2>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="glass-panel hover-3d cursor-pointer p-6 rounded-2xl reveal">
+                    <div class="flex text-cyan-400 text-sm mb-4"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                    <p class="text-gray-300 italic text-sm mb-6 leading-relaxed">"Got my Creator build within 2 days to Kandy. Cable management is incredibly clean and temps are rock solid. Highly recommended!"</p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-cyan-400/20 flex items-center justify-center text-cyan-400 font-bold">K</div>
+                        <div>
+                            <h4 class="font-bold text-sm">Kasun Perera</h4>
+                            <p class="text-xs text-gray-500">Creator PC Build</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="glass-panel hover-3d cursor-pointer p-6 rounded-2xl reveal" style="transition-delay: 100ms;">
+                    <div class="flex text-cyan-400 text-sm mb-4"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                    <p class="text-gray-300 italic text-sm mb-6 leading-relaxed">"Best customer service I've experienced. Walked into the Malabe shop, tested the accessories, and walked out with a killer keyboard."</p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-cyan-400/20 flex items-center justify-center text-cyan-400 font-bold">S</div>
+                        <div>
+                            <h4 class="font-bold text-sm">Sanduni W.</h4>
+                            <p class="text-xs text-gray-500">HyperKey RGB</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="glass-panel hover-3d cursor-pointer p-6 rounded-2xl reveal" style="transition-delay: 200ms;">
+                    <div class="flex text-cyan-400 text-sm mb-4"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i></div>
+                    <p class="text-gray-300 italic text-sm mb-6 leading-relaxed">"Pricing is very competitive and transparent. WhatsApp replies are super fast. Loving the new laptop for my university work."</p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-cyan-400/20 flex items-center justify-center text-cyan-400 font-bold">D</div>
+                        <div>
+                            <h4 class="font-bold text-sm">Dineth Jay</h4>
+                            <p class="text-xs text-gray-500">Nexus Ultra 14</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact & Footer -->
+    <footer id="contact" class="pt-20 pb-10 relative bg-darker border-t border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 mb-16">
+                
+                <div class="reveal">
+                    <span class="text-cyan-400 text-xs font-bold tracking-widest uppercase mb-2 block">Get in touch</span>
+                    <h2 class="text-4xl font-display font-bold mb-6">Come see the parts<br>before you buy.</h2>
+                    <p class="text-gray-400 mb-8 max-w-md">We're a walk-in workshop in Thalahena, Malabe. Bring your old rig, test a build, or just message us on WhatsApp.</p>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <a href="https://maps.google.com/?q=431/20+Bodiya+Road,+Thalahena,+Malabe" target="_blank" class="glass-panel p-5 rounded-2xl hover:border-cyan-400/50 transition group">
+                            <i class="fa-solid fa-location-dot text-cyan-400 text-xl mb-3"></i>
+                            <h4 class="text-xs text-gray-500 uppercase tracking-wider font-bold mb-1">Visit the lab</h4>
+                            <p class="text-sm font-semibold">431/20 Bodiya Road,<br>Thalahena, Malabe</p>
+                        </a>
+                        <a href="tel:0758171208" class="glass-panel p-5 rounded-2xl hover:border-cyan-400/50 transition group">
+                            <i class="fa-solid fa-phone text-cyan-400 text-xl mb-3"></i>
+                            <h4 class="text-xs text-gray-500 uppercase tracking-wider font-bold mb-1">Call Us</h4>
+                            <p class="text-lg font-semibold">0758171208</p>
+                        </a>
+                        <a href="https://wa.me/94726360304" target="_blank" class="glass-panel p-5 rounded-2xl hover:border-cyan-400/50 transition group">
+                            <i class="fa-brands fa-whatsapp text-cyan-400 text-xl mb-3"></i>
+                            <h4 class="text-xs text-gray-500 uppercase tracking-wider font-bold mb-1">WhatsApp</h4>
+                            <p class="text-lg font-semibold">0726360304</p>
+                        </a>
+                        <a href="mailto:disassemitha13@gmail.com" class="glass-panel p-5 rounded-2xl hover:border-cyan-400/50 transition group">
+                            <i class="fa-regular fa-envelope text-cyan-400 text-xl mb-3"></i>
+                            <h4 class="text-xs text-gray-500 uppercase tracking-wider font-bold mb-1">Email</h4>
+                            <p class="text-sm font-semibold truncate">disassemitha13@gmail.com</p>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="flex flex-col justify-between reveal" style="transition-delay: 100ms;">
+                    <div class="grid grid-cols-2 gap-8">
+                        <div>
+                            <h4 class="text-xs text-gray-500 uppercase tracking-wider font-bold mb-4">Explore</h4>
+                            <ul class="space-y-3">
+                                <li><a href="#home" class="text-gray-400 hover:text-cyan-400 text-sm transition">Home</a></li>
+                                <li><a href="#shop" class="text-gray-400 hover:text-cyan-400 text-sm transition">Shop all</a></li>
+                                <li><a href="#builds" class="text-gray-400 hover:text-cyan-400 text-sm transition">Custom builds</a></li>
+                                <li><a href="#reviews" class="text-gray-400 hover:text-cyan-400 text-sm transition">Reviews</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="text-xs text-gray-500 uppercase tracking-wider font-bold mb-4">Categories</h4>
+                            <ul class="space-y-3">
+                                <li><a href="javascript:void(0)" onclick="setCategory('laptops'); document.getElementById('shop').scrollIntoView();" class="text-gray-400 hover:text-cyan-400 text-sm transition">Laptops</a></li>
+                                <li><a href="javascript:void(0)" onclick="setCategory('pcs'); document.getElementById('shop').scrollIntoView();" class="text-gray-400 hover:text-cyan-400 text-sm transition">PC Builds</a></li>
+                                <li><a href="javascript:void(0)" onclick="setCategory('accessories'); document.getElementById('shop').scrollIntoView();" class="text-gray-400 hover:text-cyan-400 text-sm transition">Accessories</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="mt-12 bg-cyan-400/5 p-6 rounded-2xl border border-cyan-400/10">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="fa-solid fa-clock text-cyan-400"></i><span class="font-bold text-white">Opening Hours</span>
+                        </div>
+                        <p class="text-sm text-gray-400">Mon – Sat · 9:00 AM – 7:00 PM</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="flex items-center gap-2">
+                    <div class="w-6 h-6 rounded bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center">
+                        <i class="fa-solid fa-bolt text-darker text-[10px]"></i>
+                    </div>
+                    <span class="font-display font-bold text-lg tracking-tight">Nexus<span class="text-cyan-400">Tech</span></span>
+                </div>
+                <p class="text-xs text-gray-500">© 2026 Nexus Tech.lk · All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Quick View Modal -->
+    <div id="overlay" onclick="closeModals()" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-[60] hidden transition-opacity opacity-0"></div>
+    <div id="quickview-modal" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-3xl glass-panel rounded-3xl z-[70] hidden opacity-0 scale-95 transition-all duration-300 overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.8)] border border-cyan-400/20">
+        <button onclick="closeModals()" class="absolute top-4 right-4 w-8 h-8 bg-black/40 hover:bg-black/60 rounded-full flex items-center justify-center text-white z-10 transition">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        <div class="flex flex-col md:flex-row h-full max-h-[80vh] overflow-y-auto hide-scrollbar bg-dark">
+            <div class="w-full md:w-1/2 bg-gray-900 relative">
+                <img id="qv-image" src="" alt="Product" class="w-full h-64 md:h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-dark to-transparent md:hidden"></div>
+                <div class="absolute inset-0 bg-gradient-to-l from-dark to-transparent hidden md:block"></div>
+            </div>
+            <div class="w-full md:w-1/2 p-6 md:p-8 flex flex-col justify-center">
+                <span id="qv-category" class="text-cyan-400 text-xs font-bold uppercase tracking-wider mb-2">Category</span>
+                <h3 id="qv-name" class="font-display text-2xl font-bold text-white mb-2">Product Name</h3>
+                <p id="qv-price" class="text-xl font-bold text-gray-300 mb-6">Rs 0</p>
+                <h4 class="text-sm font-bold text-white mb-3 border-b border-white/10 pb-2">Specifications</h4>
+                <ul id="qv-specs" class="space-y-2 mb-8"></ul>
+                <button id="qv-add-btn" class="w-full py-3 rounded-full bg-cyan-400 hover:bg-cyan-300 text-darker transition font-bold text-sm shadow-[0_0_15px_rgba(34,211,238,0.4)] flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-cart-plus"></i> Add to Cart
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Sidebar -->
+    <div id="cart-sidebar" class="fixed top-0 right-0 h-full w-full sm:w-[450px] bg-darker border-l border-white/10 shadow-2xl z-[70] transform translate-x-full transition-transform duration-300 flex flex-col">
+        <div class="p-5 border-b border-white/10 flex justify-between items-center bg-dark">
+            <h3 class="font-display font-bold text-xl flex items-center gap-2">
+                <i class="fa-solid fa-cart-shopping text-cyan-400"></i> Your Cart
+            </h3>
+            <button onclick="toggleCart(false)" class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-gray-400 hover:text-white transition">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <div id="cart-items-container" class="flex-grow overflow-y-auto p-5 space-y-4"></div>
+        
+        <div class="p-5 border-t border-cyan-400/20 bg-dark shadow-[0_-10px_30px_rgba(0,0,0,0.5)]">
+            <div class="flex justify-between items-center mb-4">
+                <span class="text-gray-400 font-semibold text-sm">Subtotal</span>
+                <span id="cart-total" class="font-display font-bold text-xl text-cyan-400">Rs 0</span>
+            </div>
+            <div id="checkout-form-container" class="hidden flex-col gap-3 pt-4 border-t border-white/10">
+                <p class="text-xs text-gray-400 mb-1 uppercase tracking-wider font-bold">Delivery Details</p>
+                <input type="text" id="cust-name" placeholder="Full Name" class="w-full bg-white/5 border border-white/10 rounded-lg p-2.5 text-sm text-white focus:border-cyan-400 focus:outline-none">
+                <input type="tel" id="cust-phone" placeholder="Phone Number" class="w-full bg-white/5 border border-white/10 rounded-lg p-2.5 text-sm text-white focus:border-cyan-400 focus:outline-none">
+                <textarea id="cust-address" placeholder="Delivery Address" rows="2" class="w-full bg-white/5 border border-white/10 rounded-lg p-2.5 text-sm text-white focus:border-cyan-400 focus:outline-none resize-none"></textarea>
+                <p id="checkout-error" class="text-red-400 text-xs hidden bg-red-400/10 p-2 rounded border border-red-400/20"><i class="fa-solid fa-circle-exclamation mr-1"></i> Please fill all details.</p>
+                <button onclick="processCheckout()" class="w-full mt-2 py-3.5 rounded-xl bg-cyan-400 hover:bg-cyan-300 text-darker transition font-bold text-base shadow-[0_0_15px_rgba(34,211,238,0.4)] flex items-center justify-center gap-2">
+                    <i class="fa-brands fa-whatsapp text-xl"></i> Send Order
+                </button>
+            </div>
+            <button id="btn-show-checkout" onclick="showCheckoutForm()" class="w-full py-3.5 rounded-xl bg-cyan-400 hover:bg-cyan-300 text-darker transition font-bold text-base shadow-[0_0_15px_rgba(34,211,238,0.4)]">
+                Proceed to Checkout
+            </button>
+        </div>
+    </div>
+
+    <!-- MAIN JAVASCRIPT -->
+    <script>
+        // --- 3D Parallax Tilt Effect (Vanilla JS) ---
+        function init3DTilt() {
+            document.querySelectorAll('.hover-3d').forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    
+                    const rotateX = ((y - centerY) / centerY) * -12; // Max 12 deg
+                    const rotateY = ((x - centerX) / centerX) * 12;
+                    
+                    card.style.transform = `perspective(1000px) scale3d(1.02, 1.02, 1.02) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                    card.style.boxShadow = '0 20px 40px -10px rgba(0,0,0,0.6), 0 0 25px rgba(34,211,238,0.2)';
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = `perspective(1000px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg)`;
+                    card.style.boxShadow = '';
+                });
+            });
+        }
+
+        // --- Products & Cart Logic ---
+        const products = [
+            { id: 'p1', name: 'Nexus Ultra 14 Pro', price: 469000, category: 'laptops', image: 'https://images.unsplash.com/photo-1603302576837-37561b2e2302?auto=format&fit=crop&w=600&q=80', badge: 'New', specs: ['Intel Core i7 12700H', '16GB LPDDR5 RAM', '512GB NVMe PCIe 4.0 SSD', '14" 120Hz OLED Display', '2 Year Agent Warranty'] },
+            { id: 'p2', name: 'Titan Strike 15', price: 389000, category: 'laptops', image: 'https://images.unsplash.com/photo-1593640408182-31c70c8268f5?auto=format&fit=crop&w=600&q=80', badge: '', specs: ['Intel Core i5 12450H', 'RTX 4050 6GB GPU', '16GB DDR4 3200MHz', '15.6" 144Hz FHD IPS', '2 Year Agent Warranty'] },
+            { id: 'p3', name: 'Vortex RTX 4070', price: 645000, category: 'pcs', image: 'https://images.unsplash.com/photo-1587202372775-e229f172b9d7?auto=format&fit=crop&w=600&q=80', badge: 'Best Seller', specs: ['AMD Ryzen 7 7700X', 'MSI RTX 4070 12GB', '32GB G.Skill DDR5 6000MHz', '1TB WD Black SN850X', 'Corsair 750W Gold PSU', '3 Year Agent Warranty'] },
+            { id: 'p4', name: 'Aurora Stream Rig', price: 438000, category: 'pcs', image: 'https://images.unsplash.com/photo-1593640495253-23196b27a87f?auto=format&fit=crop&w=600&q=80', badge: '', specs: ['Intel Core i5 13400F', 'RTX 4060 Ti 8GB', '16GB Corsair DDR5', '1TB NVMe SSD', '650W Bronze PSU', '3 Year Agent Warranty'] },
+            { id: 'p5', name: 'HyperKey RGB Mech', price: 21500, category: 'accessories', image: 'https://images.unsplash.com/photo-1595225476474-87563907a212?auto=format&fit=crop&w=600&q=80', badge: 'Hot', specs: ['75% Compact Layout', 'Gasket Mounted Design', 'Hot-Swappable Switches', 'Tri-mode (Wired/2.4G/BT)', 'PBT Keycaps'] },
+            { id: 'p6', name: 'Pulse 7.1 Headset', price: 28500, category: 'accessories', image: 'https://images.unsplash.com/photo-1612444530582-fc66183b16f7?auto=format&fit=crop&w=600&q=80', badge: '', specs: ['7.1 Virtual Surround Sound', '50mm Neodymium Drivers', 'Detachable Noise-Canceling Mic', 'Memory Foam Earpads', 'USB-C Connection'] },
+            { id: 'p7', name: 'Glide X Wireless Mouse', price: 14500, category: 'accessories', image: 'https://images.unsplash.com/photo-1527814050087-37938154733e?auto=format&fit=crop&w=600&q=80', badge: '', specs: ['26,000 DPI Optical Sensor', 'Ultra-lightweight (58g)', '70 Hour Battery Life', 'PTFE Glide Skates', 'Zero-latency 2.4GHz'] },
+            { id: 'p8', name: 'Nova 27" 165Hz Monitor', price: 96500, category: 'accessories', image: 'https://images.unsplash.com/photo-1527443195645-1133f7f28990?auto=format&fit=crop&w=600&q=80', badge: '', specs: ['27-inch QHD (2560x1440)', '165Hz Refresh Rate', '1ms IPS Panel', 'G-Sync Compatible', '99% sRGB Color'] },
+        ];
+
+        let currentFilter = 'all';
+        function renderProducts(searchQuery = '') {
+            const grid = document.getElementById('product-grid');
+            const noMsg = document.getElementById('no-products-msg');
+            grid.innerHTML = '';
+            
+            let filtered = products.filter(p => {
+                const matchCategory = currentFilter === 'all' || p.category === currentFilter;
+                const matchSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase());
+                return matchCategory && matchSearch;
+            });
+
+            if(filtered.length === 0) {
+                noMsg.classList.remove('hidden');
+            } else {
+                noMsg.classList.add('hidden');
+                filtered.forEach((p, index) => {
+                    const badgeHtml = p.badge ? `<div class="absolute top-3 right-3 bg-cyan-400 text-darker px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider transform translate-z-20">${p.badge}</div>` : '';
+                    
+                    grid.innerHTML += `
+                        <div onclick="openQuickView('${p.id}')" class="glass-panel rounded-2xl overflow-hidden group hover-3d cursor-pointer flex flex-col h-full reveal ${p.badge==='Best Seller'?'neon-border':''}" style="transition-delay: ${index * 50}ms">
+                            <div class="relative h-48 overflow-hidden bg-gray-900 transform translate-z-10">
+                                <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover">
+                                <div class="absolute top-3 left-3 bg-darker/80 backdrop-blur px-2 py-1 rounded text-[10px] font-bold text-cyan-400 uppercase tracking-wider">${p.category === 'pcs' ? 'PC Build' : p.category}</div>
+                                ${badgeHtml}
+                            </div>
+                            <div class="p-5 flex-grow flex flex-col justify-between pointer-events-none transform translate-z-20">
+                                <div>
+                                    <h3 class="font-bold text-lg mb-1 group-hover:text-cyan-400 transition">${p.name}</h3>
+                                    <p class="text-xs text-gray-400 mb-3 truncate">${p.specs[0]} · ${p.specs[1]}</p>
+                                </div>
+                                <div class="flex justify-between items-center mt-4 pointer-events-auto">
+                                    <span class="font-display font-bold text-xl">Rs ${(p.price).toLocaleString()}</span>
+                                    <button onclick="event.stopPropagation(); addToCart('${p.id}', event)" class="w-10 h-10 rounded-full ${p.badge==='Best Seller'?'bg-cyan-400 text-darker':'bg-white/5 hover:bg-cyan-400 hover:text-darker'} transition flex items-center justify-center shadow-lg hover:shadow-cyan-400/50">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                setTimeout(() => {
+                    document.querySelectorAll('#product-grid .reveal').forEach(el => el.classList.add('active'));
+                    init3DTilt();
+                }, 50);
+            }
+        }
+
+        function setCategory(cat) {
+            currentFilter = cat;
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                btn.className = 'cat-btn px-5 py-2.5 rounded-full glass-panel hover:bg-white/10 text-sm font-medium whitespace-nowrap transition';
+            });
+            document.getElementById(`btn-cat-${cat}`).className = 'cat-btn px-5 py-2.5 rounded-full bg-cyan-400 text-darker text-sm font-semibold whitespace-nowrap transition shadow-[0_0_15px_rgba(34,211,238,0.4)]';
+            filterProducts();
+        }
+
+        function filterProducts() { renderProducts(document.getElementById('searchInput').value); }
+
+        function openQuickView(id) {
+            const p = products.find(x => x.id === id);
+            if(!p) return;
+            
+            document.getElementById('qv-image').src = p.image;
+            document.getElementById('qv-category').innerText = p.category === 'pcs' ? 'PC Build' : p.category;
+            document.getElementById('qv-name').innerText = p.name;
+            document.getElementById('qv-price').innerText = 'Rs ' + p.price.toLocaleString();
+            
+            const specsUl = document.getElementById('qv-specs');
+            specsUl.innerHTML = '';
+            p.specs.forEach(s => specsUl.innerHTML += `<li class="flex items-start gap-2 text-sm text-gray-300"><i class="fa-solid fa-check text-cyan-400 mt-1 text-xs"></i> ${s}</li>`);
+            
+            document.getElementById('qv-add-btn').onclick = (e) => { addToCart(p.id, e); closeModals(); };
+            
+            const overlay = document.getElementById('overlay');
+            const modal = document.getElementById('quickview-modal');
+            overlay.classList.remove('hidden'); modal.classList.remove('hidden');
+            setTimeout(() => { overlay.classList.remove('opacity-0'); modal.classList.remove('opacity-0', 'scale-95'); }, 10);
+        }
+
+        function closeModals() {
+            const overlay = document.getElementById('overlay');
+            const modal = document.getElementById('quickview-modal');
+            overlay.classList.add('opacity-0'); modal.classList.add('opacity-0', 'scale-95');
+            setTimeout(() => { overlay.classList.add('hidden'); modal.classList.add('hidden'); }, 300);
+            toggleCart(false);
+        }
+
+        // --- Add to Cart Logic & Flying Animation ---
+        let cart = JSON.parse(localStorage.getItem('nexus_cart')) || [];
+        function saveCart() { localStorage.setItem('nexus_cart', JSON.stringify(cart)); renderCart(); }
+
+        function addToCart(id, event, customName=null, customPrice=null, customImg=null) {
+            let p = products.find(x => x.id === id);
+            if(!p && customName) p = { id: id, name: customName, price: customPrice, image: customImg };
+            if(!p) return;
+
+            // Flying Animation Logic
+            if(event) {
+                const btn = event.currentTarget;
+                const card = btn.closest('.hover-3d') || btn.closest('.glass-panel') || document.getElementById('quickview-modal');
+                if(card) {
+                    const img = card.querySelector('img');
+                    if(img) {
+                        const clone = img.cloneNode(true);
+                        const rect = img.getBoundingClientRect();
+                        clone.className = 'flying-img';
+                        clone.style.top = rect.top + 'px';
+                        clone.style.left = rect.left + 'px';
+                        clone.style.width = rect.width + 'px';
+                        clone.style.height = rect.height + 'px';
+                        document.body.appendChild(clone);
+                        
+                        const cartIconRect = document.getElementById('nav-cart-btn').getBoundingClientRect();
+                        
+                        // Small delay to allow the DOM to render the fixed element at original coords
+                        setTimeout(() => {
+                            clone.style.top = (cartIconRect.top + 10) + 'px';
+                            clone.style.left = (cartIconRect.left + 10) + 'px';
+                            clone.style.width = '15px';
+                            clone.style.height = '15px';
+                            clone.style.opacity = '0.1';
+                            clone.style.borderRadius = '50%';
+                        }, 20);
+                        
+                        // Cleanup
+                        setTimeout(() => clone.remove(), 850);
+                    }
+                }
+            }
+
+            let existing = cart.find(item => item.id === id);
+            if(existing) existing.qty += 1;
+            else cart.push({ id: p.id, name: p.name, price: p.price, image: p.image, qty: 1 });
+            
+            saveCart();
+            
+            // Bounce cart icon instead of opening sidebar immediately
+            const cartBtn = document.getElementById('nav-cart-btn');
+            cartBtn.classList.add('animate-bounce');
+            setTimeout(() => cartBtn.classList.remove('animate-bounce'), 1000);
+        }
+
+        function removeFromCart(id) {
+            cart = cart.filter(item => item.id !== id);
+            saveCart();
+            if(cart.length === 0) {
+                const fc = document.getElementById('checkout-form-container');
+                fc.classList.add('hidden');
+                fc.classList.remove('flex');
+                document.getElementById('btn-show-checkout').classList.remove('hidden');
+            }
+        }
+
+        function updateQty(id, delta) {
+            let item = cart.find(item => item.id === id);
+            if(item) {
+                item.qty += delta;
+                if(item.qty <= 0) removeFromCart(id);
+                else saveCart();
+            }
+        }
+
+        function toggleCart(forceOpen = null) {
+            const sidebar = document.getElementById('cart-sidebar');
+            const overlay = document.getElementById('overlay');
+            let shouldOpen = forceOpen !== null ? forceOpen : sidebar.classList.contains('translate-x-full');
+            
+            if(shouldOpen) {
+                sidebar.classList.remove('translate-x-full');
+                overlay.classList.remove('hidden');
+                setTimeout(() => overlay.classList.remove('opacity-0'), 10);
+            } else {
+                sidebar.classList.add('translate-x-full');
+                overlay.classList.add('opacity-0');
+                setTimeout(() => overlay.classList.add('hidden'), 300);
+            }
+        }
+
+        function renderCart() {
+            const count = cart.reduce((sum, item) => sum + item.qty, 0);
+            document.getElementById('cart-count').innerText = count;
+
+            const container = document.getElementById('cart-items-container');
+            const totalEl = document.getElementById('cart-total');
+            const btnShowCheckout = document.getElementById('btn-show-checkout');
+            
+            container.innerHTML = '';
+            let total = 0;
+
+            if(cart.length === 0) {
+                container.innerHTML = '<div class="text-center text-gray-500 mt-10"><i class="fa-solid fa-basket-shopping text-4xl mb-3 opacity-20"></i><p>Your cart is empty</p></div>';
+                totalEl.innerText = 'Rs 0';
+                btnShowCheckout.style.display = 'none';
+                document.getElementById('checkout-form-container').classList.add('hidden');
+                return;
+            }
+            
+            const formContainer = document.getElementById('checkout-form-container');
+            if (formContainer.classList.contains('hidden')) {
+                btnShowCheckout.classList.remove('hidden');
+                btnShowCheckout.style.display = 'block';
+            }
+
+            cart.forEach(item => {
+                total += item.price * item.qty;
+                container.innerHTML += `
+                    <div class="flex items-center gap-4 bg-white/5 p-3 rounded-xl border border-white/10 relative group">
+                        <img src="${item.image}" class="w-16 h-16 object-cover rounded-lg border border-white/5" alt="${item.name}">
+                        <div class="flex-grow">
+                            <h4 class="text-sm font-bold text-white truncate max-w-[150px]">${item.name}</h4>
+                            <p class="text-xs text-cyan-400 font-semibold mt-0.5">Rs ${(item.price).toLocaleString()}</p>
+                            <div class="flex items-center gap-3 mt-2 bg-darker rounded-lg w-fit px-1 py-0.5 border border-white/5">
+                                <button onclick="updateQty('${item.id}', -1)" class="w-6 h-6 rounded text-gray-400 hover:text-white">-</button>
+                                <span class="text-xs font-bold w-4 text-center">${item.qty}</span>
+                                <button onclick="updateQty('${item.id}', 1)" class="w-6 h-6 rounded text-gray-400 hover:text-white">+</button>
+                            </div>
+                        </div>
+                        <button onclick="removeFromCart('${item.id}')" class="absolute top-3 right-3 text-gray-500 hover:text-red-400 transition"><i class="fa-solid fa-trash-can text-sm"></i></button>
+                    </div>
+                `;
+            });
+            totalEl.innerText = 'Rs ' + total.toLocaleString();
+        }
+
+        function showCheckoutForm() {
+            const btn = document.getElementById('btn-show-checkout');
+            btn.classList.add('hidden');
+            btn.style.display = 'none';
+            const formContainer = document.getElementById('checkout-form-container');
+            formContainer.classList.remove('hidden');
+            formContainer.classList.add('flex');
+        }
+
+        function processCheckout() {
+            const name = document.getElementById('cust-name').value.trim();
+            const phone = document.getElementById('cust-phone').value.trim();
+            const address = document.getElementById('cust-address').value.trim();
+            const errorEl = document.getElementById('checkout-error');
+            
+            if(!name || !phone || !address) { errorEl.classList.remove('hidden'); return; }
+            errorEl.classList.add('hidden');
+            
+            let msg = `*New Order - Nexus Tech.lk*\n\n👤 *Customer:*\nName: ${name}\nPhone: ${phone}\nAddress: ${address}\n\n🛒 *Items:*\n`;
+            let total = 0;
+            cart.forEach(item => {
+                msg += `🔹 ${item.qty}x ${item.name} - Rs ${(item.price * item.qty).toLocaleString()}\n`;
+                total += item.price * item.qty;
+            });
+            msg += `\n💵 *Total: Rs ${total.toLocaleString()}*`;
+            
+            cart = []; saveCart(); toggleCart(false);
+            window.open(`https://wa.me/94726360304?text=${encodeURIComponent(msg)}`, '_blank');
+        }
+
+        // --- Theme & Animations ---
+        let festiveInterval;
+        function setTheme(theme) {
+            document.body.classList.remove('theme-halloween', 'theme-christmas');
+            if (theme !== 'default') document.body.classList.add(`theme-${theme}`);
+            localStorage.setItem('nexus_theme', theme);
+            startFestiveAnimations(theme);
+        }
+
+        function startFestiveAnimations(theme) {
+            const container = document.getElementById('festive-container');
+            container.innerHTML = ''; clearInterval(festiveInterval);
+            if (theme === 'default') return;
+
+            const emojis = theme === 'halloween' ? ['🦇', '🎃', '👻', '🍬'] : ['❄️', '❄️', '⛄', '✨'];
+            festiveInterval = setInterval(() => {
+                const p = document.createElement('div');
+                p.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+                const isFlutter = theme === 'halloween' && Math.random() > 0.5;
+                p.className = `particle ${isFlutter ? 'flutter' : ''}`;
+                
+                const duration = Math.random() * 5 + 6;
+                p.style.fontSize = `${Math.random() * 15 + 12}px`;
+                p.style.left = `${Math.random() * 100}vw`;
+                p.style.animationDuration = `${duration}s`;
+                
+                if (isFlutter) p.style.animation = `fall ${duration}s linear forwards, flutterMove ${Math.random()*2+2}s ease-in-out infinite alternate`;
+                
+                container.appendChild(p);
+                setTimeout(() => p.remove(), duration * 1000);
+            }, 400);
+        }
+
+        function initBackgroundParticles() {
+            const container = document.getElementById('bg-particles');
+            for (let i = 0; i < 45; i++) {
+                const p = document.createElement('div');
+                p.className = 'bg-particle';
+                p.style.width = p.style.height = `${Math.random() * 2.5 + 1}px`;
+                p.style.left = `${Math.random() * 100}vw`;
+                p.style.top = `${Math.random() * 100}vh`;
+                p.style.animationDuration = `${Math.random() * 15 + 15}s`;
+                p.style.animationDelay = `${Math.random() * -25}s`;
+                p.style.setProperty('--drift-x', `${(Math.random() - 0.5) * 80}px`);
+                p.style.setProperty('--max-opacity', Math.random() * 0.6 + 0.2);
+                container.appendChild(p);
+            }
+        }
+
+        // START IMMEDIATELY ON LOAD
+        document.addEventListener('DOMContentLoaded', () => {
+            renderProducts();
+            renderCart();
+            initBackgroundParticles();
+            init3DTilt();
+            
+            setTheme(localStorage.getItem('nexus_theme') || 'default');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('active'); });
+            }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+            
+            document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+        });
+    </script>
+
+    <!-- FIREBASE INTEGRATION -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getFirestore, collection, onSnapshot, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyB6NTd264SV73gRjV8rWqZupiBKyGrTces",
+            authDomain: "nexus-tech-9c187.firebaseapp.com",
+            projectId: "nexus-tech-9c187",
+            storageBucket: "nexus-tech-9c187.firebasestorage.app",
+            messagingSenderId: "398100115315",
+            appId: "1:398100115315:web:867a1e77eb3f82cb8cdf06"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        function normalizeCategory(cat) {
+            if (!cat) return 'accessories';
+            const c = cat.toString().toLowerCase().trim();
+            if (c === 'laptops' || c === 'laptop') return 'laptops';
+            if (c === 'pc builds' || c === 'pcs' || c === 'pc build' || c === 'pc') return 'pcs';
+            if (c === 'accessories' || c === 'accessory') return 'accessories';
+            return c;
+        }
+
+        function mapToStoreProduct(id, data) {
+            let specsArr = [];
+            if (Array.isArray(data.specs) && data.specs.length > 0) {
+                specsArr = data.specs;
+            } else if (data.description) {
+                specsArr = data.description.split(/[·,\n]/).map(s => s.trim()).filter(Boolean);
+            }
+            if (specsArr.length === 0) {
+                specsArr = ['Genuine Agent Warranty', 'Tested & Verified'];
+            } else if (specsArr.length === 1) {
+                specsArr.push('Genuine Agent Warranty');
+            }
+            return {
+                id: id || data.id || ('p_' + Date.now()),
+                name: data.name || 'Unnamed Product',
+                price: Number(data.price) || 0,
+                category: normalizeCategory(data.category),
+                image: data.image || 'https://placehold.co/600x400/1a1a1a/22d3ee?text=Nexus+Tech',
+                badge: data.badge || '',
+                specs: specsArr,
+                createdAtMillis: data.createdAt?.toMillis ? data.createdAt.toMillis() : 0
+            };
+        }
+
+        function syncFromLocalBackup() {
+            const saved = localStorage.getItem('nexus_shared_products');
+            if (saved) {
+                try {
+                    const parsed = JSON.parse(saved);
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        const active = parsed.filter(d => d.inStock !== false).map(d => mapToStoreProduct(d.id, d));
+                        products.length = 0;
+                        active.forEach(p => products.push(p));
+                        filterProducts();
+                    }
+                } catch (e) {}
+            }
+        }
+
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'nexus_shared_products') {
+                syncFromLocalBackup();
+            }
+        });
+
+        function initFirebaseSync() {
+            syncFromLocalBackup();
+
+            onSnapshot(collection(db, 'products'), (snapshot) => {
+                if (!snapshot.empty) {
+                    const fbProducts = [];
+                    const rawList = [];
+                    snapshot.forEach(docSnap => {
+                        const data = docSnap.data();
+                        rawList.push({ id: docSnap.id, ...data });
+                        if (data.inStock !== false) {
+                            fbProducts.push(mapToStoreProduct(docSnap.id, data));
+                        }
+                    });
+                    fbProducts.sort((a, b) => b.createdAtMillis - a.createdAtMillis);
+                    localStorage.setItem('nexus_shared_products', JSON.stringify(rawList));
+                    products.length = 0;
+                    fbProducts.forEach(p => products.push(p));
+                    filterProducts();
+                }
+            }, (error) => {
+                console.warn("Firestore products listener note:", error.message);
+                syncFromLocalBackup();
+            });
+        }
+
+        // Override processCheckout to open WhatsApp immediately & save order to Firebase Firestore 'orders' collection
+        window.processCheckout = async function() {
+            const name = document.getElementById('cust-name').value.trim();
+            const phone = document.getElementById('cust-phone').value.trim();
+            const address = document.getElementById('cust-address').value.trim();
+            const errorEl = document.getElementById('checkout-error');
+            
+            if(!name || !phone || !address) { errorEl.classList.remove('hidden'); return; }
+            errorEl.classList.add('hidden');
+            
+            let msg = `*New Order - Nexus Tech.lk*\n\n👤 *Customer:*\nName: ${name}\nPhone: ${phone}\nAddress: ${address}\n\n🛒 *Items:*\n`;
+            let itemsSummary = [];
+            let total = 0;
+            cart.forEach(item => {
+                msg += `🔹 ${item.qty}x ${item.name} - Rs ${(item.price * item.qty).toLocaleString()}\n`;
+                itemsSummary.push(`${item.qty}x ${item.name}`);
+                total += item.price * item.qty;
+            });
+            msg += `\n💵 *Total: Rs ${total.toLocaleString()}*`;
+            
+            const whatsappUrl = `https://wa.me/94726360304?text=${encodeURIComponent(msg)}`;
+
+            const newOrder = {
+                customerName: name,
+                phone: phone,
+                address: address,
+                items: itemsSummary.join('\n'),
+                totalAmount: total,
+                status: 'Pending'
+            };
+
+            // Reset UI and open WhatsApp immediately (synchronously with user click so popup blocker never blocks it)
+            const localOrderId = 'ord_' + Date.now();
+            const savedOrders = JSON.parse(localStorage.getItem('nexus_shared_orders') || '[]');
+            savedOrders.unshift({ id: localOrderId, ...newOrder });
+            localStorage.setItem('nexus_shared_orders', JSON.stringify(savedOrders));
+
+            document.getElementById('cust-name').value = '';
+            document.getElementById('cust-phone').value = '';
+            document.getElementById('cust-address').value = '';
+            const fc = document.getElementById('checkout-form-container');
+            fc.classList.add('hidden');
+            fc.classList.remove('flex');
+
+            cart = []; saveCart(); toggleCart(false);
+            window.open(whatsappUrl, '_blank');
+
+            // Save to Firebase Firestore in the background
+            try {
+                await addDoc(collection(db, 'orders'), {
+                    ...newOrder,
+                    createdAt: serverTimestamp()
+                });
+            } catch (err) {
+                console.warn("Order saved locally; Firestore sync note:", err.message);
+            }
+        };
+
+        initFirebaseSync();
+    </script>
+</body>
+
+</html>
